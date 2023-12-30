@@ -50,15 +50,15 @@ type Client interface {
 // is easier to mock.
 type ABCIClient interface {
 	// Reading from abci app
-	ABCIInfo(context.Context) (*ctypes.ResultABCIInfo, error)
-	ABCIQuery(ctx context.Context, path string, data bytes.HexBytes) (*ctypes.ResultABCIQuery, error)
-	ABCIQueryWithOptions(ctx context.Context, path string, data bytes.HexBytes,
+	ABCIInfo(ctx context.Context, app string) (*ctypes.ResultABCIInfo, error)
+	ABCIQuery(ctx context.Context, app string, path string, data bytes.HexBytes) (*ctypes.ResultABCIQuery, error)
+	ABCIQueryWithOptions(ctx context.Context, app string, path string, data bytes.HexBytes,
 		opts ABCIQueryOptions) (*ctypes.ResultABCIQuery, error)
 
 	// Writing to abci app
-	BroadcastTxCommit(context.Context, types.Tx) (*ctypes.ResultBroadcastTxCommit, error)
-	BroadcastTxAsync(context.Context, types.Tx) (*ctypes.ResultBroadcastTx, error)
-	BroadcastTxSync(context.Context, types.Tx) (*ctypes.ResultBroadcastTx, error)
+	BroadcastTxCommit(ctx context.Context, app string, tx types.Tx) (*ctypes.ResultBroadcastTxCommit, error)
+	BroadcastTxAsync(cxt context.Context, app string, tx types.Tx) (*ctypes.ResultBroadcastTx, error)
+	BroadcastTxSync(ctx context.Context, app string, tx types.Tx) (*ctypes.ResultBroadcastTx, error)
 }
 
 // SignClient groups together the functionality needed to get valid signatures
@@ -136,7 +136,7 @@ type EventsClient interface {
 type MempoolClient interface {
 	UnconfirmedTxs(ctx context.Context, limit *int) (*ctypes.ResultUnconfirmedTxs, error)
 	NumUnconfirmedTxs(context.Context) (*ctypes.ResultUnconfirmedTxs, error)
-	CheckTx(context.Context, types.Tx) (*ctypes.ResultCheckTx, error)
+	CheckTx(ctx context.Context, app string, tx types.Tx) (*ctypes.ResultCheckTx, error)
 }
 
 // EvidenceClient is used for submitting an evidence of the malicious

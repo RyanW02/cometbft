@@ -41,13 +41,13 @@ func RPCRoutes(c *lrpc.Client) map[string]*rpcserver.RPCFunc {
 		"num_unconfirmed_txs":  rpcserver.NewRPCFunc(makeNumUnconfirmedTxsFunc(c), ""),
 
 		// tx broadcast API
-		"broadcast_tx_commit": rpcserver.NewRPCFunc(makeBroadcastTxCommitFunc(c), "tx"),
-		"broadcast_tx_sync":   rpcserver.NewRPCFunc(makeBroadcastTxSyncFunc(c), "tx"),
-		"broadcast_tx_async":  rpcserver.NewRPCFunc(makeBroadcastTxAsyncFunc(c), "tx"),
+		"broadcast_tx_commit": rpcserver.NewRPCFunc(makeBroadcastTxCommitFunc(c), "app,tx"),
+		"broadcast_tx_sync":   rpcserver.NewRPCFunc(makeBroadcastTxSyncFunc(c), "app,tx"),
+		"broadcast_tx_async":  rpcserver.NewRPCFunc(makeBroadcastTxAsyncFunc(c), "app,tx"),
 
 		// abci API
-		"abci_query": rpcserver.NewRPCFunc(makeABCIQueryFunc(c), "path,data,height,prove"),
-		"abci_info":  rpcserver.NewRPCFunc(makeABCIInfoFunc(c), "", rpcserver.Cacheable()),
+		"abci_query": rpcserver.NewRPCFunc(makeABCIQueryFunc(c), "app,path,data,height,prove"),
+		"abci_info":  rpcserver.NewRPCFunc(makeABCIInfoFunc(c), "app,", rpcserver.Cacheable()),
 
 		// evidence API
 		"broadcast_evidence": rpcserver.NewRPCFunc(makeBroadcastEvidenceFunc(c), "evidence"),
@@ -247,49 +247,49 @@ func makeNumUnconfirmedTxsFunc(c *lrpc.Client) rpcNumUnconfirmedTxsFunc {
 	}
 }
 
-type rpcBroadcastTxCommitFunc func(ctx *rpctypes.Context, tx types.Tx) (*ctypes.ResultBroadcastTxCommit, error)
+type rpcBroadcastTxCommitFunc func(ctx *rpctypes.Context, app string, tx types.Tx) (*ctypes.ResultBroadcastTxCommit, error)
 
 func makeBroadcastTxCommitFunc(c *lrpc.Client) rpcBroadcastTxCommitFunc {
-	return func(ctx *rpctypes.Context, tx types.Tx) (*ctypes.ResultBroadcastTxCommit, error) {
-		return c.BroadcastTxCommit(ctx.Context(), tx)
+	return func(ctx *rpctypes.Context, app string, tx types.Tx) (*ctypes.ResultBroadcastTxCommit, error) {
+		return c.BroadcastTxCommit(ctx.Context(), app, tx)
 	}
 }
 
-type rpcBroadcastTxSyncFunc func(ctx *rpctypes.Context, tx types.Tx) (*ctypes.ResultBroadcastTx, error)
+type rpcBroadcastTxSyncFunc func(ctx *rpctypes.Context, app string, tx types.Tx) (*ctypes.ResultBroadcastTx, error)
 
 func makeBroadcastTxSyncFunc(c *lrpc.Client) rpcBroadcastTxSyncFunc {
-	return func(ctx *rpctypes.Context, tx types.Tx) (*ctypes.ResultBroadcastTx, error) {
-		return c.BroadcastTxSync(ctx.Context(), tx)
+	return func(ctx *rpctypes.Context, app string, tx types.Tx) (*ctypes.ResultBroadcastTx, error) {
+		return c.BroadcastTxSync(ctx.Context(), app, tx)
 	}
 }
 
-type rpcBroadcastTxAsyncFunc func(ctx *rpctypes.Context, tx types.Tx) (*ctypes.ResultBroadcastTx, error)
+type rpcBroadcastTxAsyncFunc func(ctx *rpctypes.Context, app string, tx types.Tx) (*ctypes.ResultBroadcastTx, error)
 
 func makeBroadcastTxAsyncFunc(c *lrpc.Client) rpcBroadcastTxAsyncFunc {
-	return func(ctx *rpctypes.Context, tx types.Tx) (*ctypes.ResultBroadcastTx, error) {
-		return c.BroadcastTxAsync(ctx.Context(), tx)
+	return func(ctx *rpctypes.Context, app string, tx types.Tx) (*ctypes.ResultBroadcastTx, error) {
+		return c.BroadcastTxAsync(ctx.Context(), app, tx)
 	}
 }
 
-type rpcABCIQueryFunc func(ctx *rpctypes.Context, path string,
+type rpcABCIQueryFunc func(ctx *rpctypes.Context, app string, path string,
 	data bytes.HexBytes, height int64, prove bool) (*ctypes.ResultABCIQuery, error)
 
 func makeABCIQueryFunc(c *lrpc.Client) rpcABCIQueryFunc {
-	return func(ctx *rpctypes.Context, path string, data bytes.HexBytes,
+	return func(ctx *rpctypes.Context, app string, path string, data bytes.HexBytes,
 		height int64, prove bool,
 	) (*ctypes.ResultABCIQuery, error) {
-		return c.ABCIQueryWithOptions(ctx.Context(), path, data, rpcclient.ABCIQueryOptions{
+		return c.ABCIQueryWithOptions(ctx.Context(), app, path, data, rpcclient.ABCIQueryOptions{
 			Height: height,
 			Prove:  prove,
 		})
 	}
 }
 
-type rpcABCIInfoFunc func(ctx *rpctypes.Context) (*ctypes.ResultABCIInfo, error)
+type rpcABCIInfoFunc func(ctx *rpctypes.Context, app string) (*ctypes.ResultABCIInfo, error)
 
 func makeABCIInfoFunc(c *lrpc.Client) rpcABCIInfoFunc {
-	return func(ctx *rpctypes.Context) (*ctypes.ResultABCIInfo, error) {
-		return c.ABCIInfo(ctx.Context())
+	return func(ctx *rpctypes.Context, app string) (*ctypes.ResultABCIInfo, error) {
+		return c.ABCIInfo(ctx.Context(), app)
 	}
 }
 

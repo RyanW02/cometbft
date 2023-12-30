@@ -118,23 +118,23 @@ func (c *Client) Status(ctx context.Context) (*ctypes.ResultStatus, error) {
 	return c.next.Status(ctx)
 }
 
-func (c *Client) ABCIInfo(ctx context.Context) (*ctypes.ResultABCIInfo, error) {
-	return c.next.ABCIInfo(ctx)
+func (c *Client) ABCIInfo(ctx context.Context, app string) (*ctypes.ResultABCIInfo, error) {
+	return c.next.ABCIInfo(ctx, app)
 }
 
 // ABCIQuery requests proof by default.
-func (c *Client) ABCIQuery(ctx context.Context, path string, data cmtbytes.HexBytes) (*ctypes.ResultABCIQuery, error) {
-	return c.ABCIQueryWithOptions(ctx, path, data, rpcclient.DefaultABCIQueryOptions)
+func (c *Client) ABCIQuery(ctx context.Context, app string, path string, data cmtbytes.HexBytes) (*ctypes.ResultABCIQuery, error) {
+	return c.ABCIQueryWithOptions(ctx, app, path, data, rpcclient.DefaultABCIQueryOptions)
 }
 
 // ABCIQueryWithOptions returns an error if opts.Prove is false.
-func (c *Client) ABCIQueryWithOptions(ctx context.Context, path string, data cmtbytes.HexBytes,
+func (c *Client) ABCIQueryWithOptions(ctx context.Context, app string, path string, data cmtbytes.HexBytes,
 	opts rpcclient.ABCIQueryOptions) (*ctypes.ResultABCIQuery, error) {
 
 	// always request the proof
 	opts.Prove = true
 
-	res, err := c.next.ABCIQueryWithOptions(ctx, path, data, opts)
+	res, err := c.next.ABCIQueryWithOptions(ctx, app, path, data, opts)
 	if err != nil {
 		return nil, err
 	}
@@ -189,16 +189,16 @@ func (c *Client) ABCIQueryWithOptions(ctx context.Context, path string, data cmt
 	return &ctypes.ResultABCIQuery{Response: resp}, nil
 }
 
-func (c *Client) BroadcastTxCommit(ctx context.Context, tx types.Tx) (*ctypes.ResultBroadcastTxCommit, error) {
-	return c.next.BroadcastTxCommit(ctx, tx)
+func (c *Client) BroadcastTxCommit(ctx context.Context, app string, tx types.Tx) (*ctypes.ResultBroadcastTxCommit, error) {
+	return c.next.BroadcastTxCommit(ctx, app, tx)
 }
 
-func (c *Client) BroadcastTxAsync(ctx context.Context, tx types.Tx) (*ctypes.ResultBroadcastTx, error) {
-	return c.next.BroadcastTxAsync(ctx, tx)
+func (c *Client) BroadcastTxAsync(ctx context.Context, app string, tx types.Tx) (*ctypes.ResultBroadcastTx, error) {
+	return c.next.BroadcastTxAsync(ctx, app, tx)
 }
 
-func (c *Client) BroadcastTxSync(ctx context.Context, tx types.Tx) (*ctypes.ResultBroadcastTx, error) {
-	return c.next.BroadcastTxSync(ctx, tx)
+func (c *Client) BroadcastTxSync(ctx context.Context, app string, tx types.Tx) (*ctypes.ResultBroadcastTx, error) {
+	return c.next.BroadcastTxSync(ctx, app, tx)
 }
 
 func (c *Client) UnconfirmedTxs(ctx context.Context, limit *int) (*ctypes.ResultUnconfirmedTxs, error) {
@@ -209,8 +209,8 @@ func (c *Client) NumUnconfirmedTxs(ctx context.Context) (*ctypes.ResultUnconfirm
 	return c.next.NumUnconfirmedTxs(ctx)
 }
 
-func (c *Client) CheckTx(ctx context.Context, tx types.Tx) (*ctypes.ResultCheckTx, error) {
-	return c.next.CheckTx(ctx, tx)
+func (c *Client) CheckTx(ctx context.Context, app string, tx types.Tx) (*ctypes.ResultCheckTx, error) {
+	return c.next.CheckTx(ctx, app, tx)
 }
 
 func (c *Client) NetInfo(ctx context.Context) (*ctypes.ResultNetInfo, error) {

@@ -72,6 +72,7 @@ message RequestInfo {
   uint64 block_version = 2;
   uint64 p2p_version   = 3;
   string abci_version  = 4;
+  string app = 5;
 }
 
 message RequestInitChain {
@@ -82,6 +83,7 @@ message RequestInitChain {
   repeated ValidatorUpdate         validators       = 4 [(gogoproto.nullable) = false];
   bytes                            app_state_bytes  = 5;
   int64                            initial_height   = 6;
+  string app = 7;
 }
 
 message RequestQuery {
@@ -89,6 +91,7 @@ message RequestQuery {
   string path   = 2;
   int64  height = 3;
   bool   prove  = 4;
+  string app = 5;
 }
 
 enum CheckTxType {
@@ -99,17 +102,23 @@ enum CheckTxType {
 message RequestCheckTx {
   bytes       tx   = 1;
   CheckTxType type = 2;
+  string app = 3;
 }
 
-message RequestCommit {}
+message RequestCommit {
+  string app = 1;
+}
 
 // lists available snapshots
-message RequestListSnapshots {}
+message RequestListSnapshots {
+  string app = 1;
+}
 
 // offers a snapshot to the application
 message RequestOfferSnapshot {
   Snapshot snapshot = 1;  // snapshot offered by peers
   bytes    app_hash = 2;  // light client-verified app hash for snapshot height
+  string app = 3;
 }
 
 // loads a snapshot chunk
@@ -117,6 +126,7 @@ message RequestLoadSnapshotChunk {
   uint64 height = 1;
   uint32 format = 2;
   uint32 chunk  = 3;
+  string app = 4;
 }
 
 // Applies a snapshot chunk
@@ -124,6 +134,7 @@ message RequestApplySnapshotChunk {
   uint32 index  = 1;
   bytes  chunk  = 2;
   string sender = 3;
+  string app = 4;
 }
 
 message RequestPrepareProposal {
@@ -139,6 +150,7 @@ message RequestPrepareProposal {
   bytes                     next_validators_hash = 7;
   // address of the public key of the validator proposing the block.
   bytes proposer_address = 8;
+  string app = 9;
 }
 
 message RequestProcessProposal {
@@ -152,6 +164,7 @@ message RequestProcessProposal {
   bytes                     next_validators_hash = 7;
   // address of the public key of the original proposer of the block.
   bytes proposer_address = 8;
+  string app = 9;
 }
 
 // Extends a vote with application-injected data
@@ -168,6 +181,7 @@ message RequestExtendVote {
   bytes                     next_validators_hash = 7;
   // address of the public key of the original proposer of the block.
   bytes proposer_address = 8;
+  string app = 9;
 }
 
 // Verify the vote extension
@@ -178,6 +192,7 @@ message RequestVerifyVoteExtension {
   bytes validator_address = 2;
   int64 height            = 3;
   bytes vote_extension    = 4;
+  string app = 5;
 }
 
 message RequestFinalizeBlock {
@@ -191,6 +206,7 @@ message RequestFinalizeBlock {
   bytes                     next_validators_hash = 7;
   // proposer_address is the address of the public key of the original proposer of the block.
   bytes proposer_address = 8;
+  string app = 9;
 }
 
 //----------------------------------------

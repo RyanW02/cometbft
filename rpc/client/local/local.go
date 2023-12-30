@@ -69,33 +69,34 @@ func (c *Local) Status(context.Context) (*ctypes.ResultStatus, error) {
 	return c.env.Status(c.ctx)
 }
 
-func (c *Local) ABCIInfo(context.Context) (*ctypes.ResultABCIInfo, error) {
-	return c.env.ABCIInfo(c.ctx)
+func (c *Local) ABCIInfo(_ context.Context, app string) (*ctypes.ResultABCIInfo, error) {
+	return c.env.ABCIInfo(c.ctx, app)
 }
 
-func (c *Local) ABCIQuery(ctx context.Context, path string, data bytes.HexBytes) (*ctypes.ResultABCIQuery, error) {
-	return c.ABCIQueryWithOptions(ctx, path, data, rpcclient.DefaultABCIQueryOptions)
+func (c *Local) ABCIQuery(ctx context.Context, app string, path string, data bytes.HexBytes) (*ctypes.ResultABCIQuery, error) {
+	return c.ABCIQueryWithOptions(ctx, app, path, data, rpcclient.DefaultABCIQueryOptions)
 }
 
 func (c *Local) ABCIQueryWithOptions(
 	_ context.Context,
+	app string,
 	path string,
 	data bytes.HexBytes,
 	opts rpcclient.ABCIQueryOptions,
 ) (*ctypes.ResultABCIQuery, error) {
-	return c.env.ABCIQuery(c.ctx, path, data, opts.Height, opts.Prove)
+	return c.env.ABCIQuery(c.ctx, app, path, data, opts.Height, opts.Prove)
 }
 
-func (c *Local) BroadcastTxCommit(_ context.Context, tx types.Tx) (*ctypes.ResultBroadcastTxCommit, error) {
-	return c.env.BroadcastTxCommit(c.ctx, tx)
+func (c *Local) BroadcastTxCommit(_ context.Context, app string, tx types.Tx) (*ctypes.ResultBroadcastTxCommit, error) {
+	return c.env.BroadcastTxCommit(c.ctx, app, tx)
 }
 
-func (c *Local) BroadcastTxAsync(_ context.Context, tx types.Tx) (*ctypes.ResultBroadcastTx, error) {
-	return c.env.BroadcastTxAsync(c.ctx, tx)
+func (c *Local) BroadcastTxAsync(_ context.Context, app string, tx types.Tx) (*ctypes.ResultBroadcastTx, error) {
+	return c.env.BroadcastTxAsync(c.ctx, app, tx)
 }
 
-func (c *Local) BroadcastTxSync(_ context.Context, tx types.Tx) (*ctypes.ResultBroadcastTx, error) {
-	return c.env.BroadcastTxSync(c.ctx, tx)
+func (c *Local) BroadcastTxSync(_ context.Context, app string, tx types.Tx) (*ctypes.ResultBroadcastTx, error) {
+	return c.env.BroadcastTxSync(c.ctx, app, tx)
 }
 
 func (c *Local) UnconfirmedTxs(_ context.Context, limit *int) (*ctypes.ResultUnconfirmedTxs, error) {
@@ -106,8 +107,8 @@ func (c *Local) NumUnconfirmedTxs(context.Context) (*ctypes.ResultUnconfirmedTxs
 	return c.env.NumUnconfirmedTxs(c.ctx)
 }
 
-func (c *Local) CheckTx(_ context.Context, tx types.Tx) (*ctypes.ResultCheckTx, error) {
-	return c.env.CheckTx(c.ctx, tx)
+func (c *Local) CheckTx(_ context.Context, app string, tx types.Tx) (*ctypes.ResultCheckTx, error) {
+	return c.env.CheckTx(c.ctx, app, tx)
 }
 
 func (c *Local) NetInfo(context.Context) (*ctypes.ResultNetInfo, error) {

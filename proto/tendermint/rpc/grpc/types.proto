@@ -11,6 +11,7 @@ message RequestPing {}
 
 message RequestBroadcastTx {
   bytes tx = 1;
+  string app = 2;
 }
 
 //----------------------------------------

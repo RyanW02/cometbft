@@ -20,7 +20,7 @@ func (emptyMempool) Lock()            {}
 func (emptyMempool) Unlock()          {}
 func (emptyMempool) Size() int        { return 0 }
 func (emptyMempool) SizeBytes() int64 { return 0 }
-func (emptyMempool) CheckTx(types.Tx, func(*abci.ResponseCheckTx), mempl.TxInfo) error {
+func (emptyMempool) CheckTx(string, types.Tx, func(*abci.ResponseCheckTx), mempl.TxInfo) error {
 	return nil
 }
 

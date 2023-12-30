@@ -20,7 +20,7 @@ func (bapi *broadcastAPI) Ping(context.Context, *RequestPing) (*ResponsePing, er
 func (bapi *broadcastAPI) BroadcastTx(_ context.Context, req *RequestBroadcastTx) (*ResponseBroadcastTx, error) {
 	// NOTE: there's no way to get client's remote address
 	// see https://stackoverflow.com/questions/33684570/session-and-remote-ip-address-in-grpc-go
-	res, err := bapi.env.BroadcastTxCommit(&rpctypes.Context{}, req.Tx)
+	res, err := bapi.env.BroadcastTxCommit(&rpctypes.Context{}, req.App, req.Tx)
 	if err != nil {
 		return nil, err
 	}

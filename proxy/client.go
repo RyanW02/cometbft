@@ -2,6 +2,7 @@ package proxy
 
 import (
 	"fmt"
+	dbm "github.com/cometbft/cometbft-db"
 
 	abcicli "github.com/cometbft/cometbft/abci/client"
 	"github.com/cometbft/cometbft/abci/example/kvstore"
@@ -41,6 +42,27 @@ func NewLocalClientCreator(app types.Application) ClientCreator {
 
 func (l *localClientCreator) NewABCIClient() (abcicli.Client, error) {
 	return abcicli.NewLocalClient(l.mtx, l.app), nil
+}
+
+//----------------------------------------------------
+// local proxy for multiplexed applications
+
+type localMultiplexedClientCreator struct {
+	stateDb dbm.DB
+	apps    map[string]types.Application
+}
+
+// NewLocalMultiplexedClientCreator returns a [ClientCreator] for the given multiplexed
+// local apps.
+func NewLocalMultiplexedClientCreator(stateDb dbm.DB, apps map[string]types.Application) ClientCreator {
+	return &localMultiplexedClientCreator{
+		stateDb: stateDb,
+		apps:    apps,
+	}
+}
+
+func (l *localMultiplexedClientCreator) NewABCIClient() (abcicli.Client, error) {
+	return abcicli.NewMultiplexedLocalClient(l.stateDb, l.apps)
 }
 
 //----------------------------------------------------

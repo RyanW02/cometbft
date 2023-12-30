@@ -217,6 +217,7 @@ func (mem *CListMempool) TxsWaitChan() <-chan struct{} {
 //
 // Safe for concurrent use by multiple goroutines.
 func (mem *CListMempool) CheckTx(
+	app string,
 	tx types.Tx,
 	cb func(*abci.ResponseCheckTx),
 	txInfo TxInfo,
@@ -265,7 +266,7 @@ func (mem *CListMempool) CheckTx(
 		return ErrTxInCache
 	}
 
-	reqRes, err := mem.proxyAppConn.CheckTxAsync(context.TODO(), &abci.RequestCheckTx{Tx: tx})
+	reqRes, err := mem.proxyAppConn.CheckTxAsync(context.TODO(), &abci.RequestCheckTx{Tx: tx, App: app})
 	if err != nil {
 		return err
 	}

@@ -21,7 +21,7 @@ var errNotAllowed = errors.New("not allowed with `nop` mempool")
 var _ Mempool = &NopMempool{}
 
 // CheckTx always returns an error.
-func (*NopMempool) CheckTx(types.Tx, func(*abci.ResponseCheckTx), TxInfo) error {
+func (*NopMempool) CheckTx(string, types.Tx, func(*abci.ResponseCheckTx), TxInfo) error {
 	return errNotAllowed
 }
 

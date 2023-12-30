@@ -29,7 +29,7 @@ func (env *Environment) GetRoutes() RoutesMap {
 		"commit":               rpc.NewRPCFunc(env.Commit, "height", rpc.Cacheable("height")),
 		"header":               rpc.NewRPCFunc(env.Header, "height", rpc.Cacheable("height")),
 		"header_by_hash":       rpc.NewRPCFunc(env.HeaderByHash, "hash", rpc.Cacheable()),
-		"check_tx":             rpc.NewRPCFunc(env.CheckTx, "tx"),
+		"check_tx":             rpc.NewRPCFunc(env.CheckTx, "app,tx"),
 		"tx":                   rpc.NewRPCFunc(env.Tx, "hash,prove", rpc.Cacheable()),
 		"tx_search":            rpc.NewRPCFunc(env.TxSearch, "query,prove,page,per_page,order_by"),
 		"block_search":         rpc.NewRPCFunc(env.BlockSearch, "query,page,per_page,order_by"),
@@ -41,13 +41,13 @@ func (env *Environment) GetRoutes() RoutesMap {
 		"num_unconfirmed_txs":  rpc.NewRPCFunc(env.NumUnconfirmedTxs, ""),
 
 		// tx broadcast API
-		"broadcast_tx_commit": rpc.NewRPCFunc(env.BroadcastTxCommit, "tx"),
-		"broadcast_tx_sync":   rpc.NewRPCFunc(env.BroadcastTxSync, "tx"),
-		"broadcast_tx_async":  rpc.NewRPCFunc(env.BroadcastTxAsync, "tx"),
+		"broadcast_tx_commit": rpc.NewRPCFunc(env.BroadcastTxCommit, "app,tx"),
+		"broadcast_tx_sync":   rpc.NewRPCFunc(env.BroadcastTxSync, "app,tx"),
+		"broadcast_tx_async":  rpc.NewRPCFunc(env.BroadcastTxAsync, "app,tx"),
 
 		// abci API
-		"abci_query": rpc.NewRPCFunc(env.ABCIQuery, "path,data,height,prove"),
-		"abci_info":  rpc.NewRPCFunc(env.ABCIInfo, "", rpc.Cacheable()),
+		"abci_query": rpc.NewRPCFunc(env.ABCIQuery, "app,path,data,height,prove"),
+		"abci_info":  rpc.NewRPCFunc(env.ABCIInfo, "app", rpc.Cacheable()),
 
 		// evidence API
 		"broadcast_evidence": rpc.NewRPCFunc(env.BroadcastEvidence, "evidence"),

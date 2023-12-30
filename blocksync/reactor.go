@@ -416,8 +416,10 @@ FOR_LOOP:
 			// coupling them as it's written here.  TODO uncouple from request
 			// routine.
 
+			bcR.pool.AddBlock()
 			// See if there are any blocks to sync.
 			first, second, extCommit := bcR.pool.PeekTwoBlocks()
+
 			if first == nil || second == nil {
 				// we need to have fetched two consecutive blocks in order to
 				// perform blocksync verification
