@@ -51,7 +51,7 @@ func BenchmarkLoadValidators(b *testing.B) {
 	config := test.ResetTestRoot("state_")
 	defer os.RemoveAll(config.RootDir)
 	dbType := dbm.BackendType(config.DBBackend)
-	stateDB, err := dbm.NewDB("state", dbType, config.DBDir())
+	stateDB, err := dbm.NewDB(dbType, config.BuildDBOptions("state"))
 	require.NoError(b, err)
 	stateStore := sm.NewStore(stateDB, sm.StoreOptions{
 		DiscardABCIResponses: false,

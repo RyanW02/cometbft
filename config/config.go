@@ -206,8 +206,8 @@ type BaseConfig struct { //nolint: maligned
 	//   - use badgerdb build tag (go build -tags badgerdb)
 	DBBackend string `mapstructure:"db_backend"`
 
-	// Database directory
-	DBPath string `mapstructure:"db_dir"`
+	// Database options
+	DBOptions map[string]string `mapstructure:"db_options"`
 
 	// Output level for logging
 	LogLevel string `mapstructure:"log_level"`
@@ -254,7 +254,9 @@ func DefaultBaseConfig() BaseConfig {
 		LogFormat:          LogFormatPlain,
 		FilterPeers:        false,
 		DBBackend:          "goleveldb",
-		DBPath:             DefaultDataDir,
+		DBOptions: map[string]string{
+			"dir": DefaultDataDir,
+		},
 	}
 }
 
@@ -288,7 +290,18 @@ func (cfg BaseConfig) NodeKeyFile() string {
 
 // DBDir returns the full path to the database directory
 func (cfg BaseConfig) DBDir() string {
-	return rootify(cfg.DBPath, cfg.RootDir)
+	dbPath, ok := cfg.DBOptions["dir"]
+	if !ok {
+		dbPath = DefaultDataDir
+	}
+
+	return rootify(dbPath, cfg.RootDir)
+}
+
+func (cfg BaseConfig) BuildDBOptions(name string) map[string]string {
+	options := copyMap(cfg.DBOptions)
+	options["name"] = name
+	return options
 }
 
 // ValidateBasic performs basic validation (checking param bounds, etc.) and
@@ -1261,4 +1274,12 @@ func getDefaultMoniker() string {
 		moniker = "anonymous"
 	}
 	return moniker
+}
+
+func copyMap[T comparable, U any](old map[T]U) map[T]U {
+	newMap := make(map[T]U, len(old))
+	for key, val := range old {
+		newMap[key] = val
+	}
+	return newMap
 }

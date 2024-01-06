@@ -681,7 +681,7 @@ func benchmarkTxIndex(txsCount int64, b *testing.B) {
 	require.NoError(b, err)
 	defer os.RemoveAll(dir)
 
-	store, err := db.NewDB("tx_index", "goleveldb", dir)
+	store, err := db.NewFlatFileDB("tx_index", "goleveldb", dir)
 	require.NoError(b, err)
 	indexer := NewTxIndex(store)
 

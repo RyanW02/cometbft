@@ -23,7 +23,9 @@ func TestDefaultConfig(t *testing.T) {
 	// check the root dir stuff...
 	cfg.SetRoot("/foo")
 	cfg.Genesis = "bar"
-	cfg.DBPath = "/opt/data"
+	cfg.DBOptions = map[string]string{
+		"dir": "/opt/data",
+	}
 	cfg.Mempool.WalPath = "wal/mem/"
 
 	assert.Equal("/foo/bar", cfg.GenesisFile())

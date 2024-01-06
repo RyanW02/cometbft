@@ -26,5 +26,5 @@ type DBProvider func(*DBContext) (dbm.DB, error)
 func DefaultDBProvider(ctx *DBContext) (dbm.DB, error) {
 	dbType := dbm.BackendType(ctx.Config.DBBackend)
 
-	return dbm.NewDB(ctx.ID, dbType, ctx.Config.DBDir())
+	return dbm.NewDB(dbType, ctx.Config.BuildDBOptions(ctx.ID))
 }

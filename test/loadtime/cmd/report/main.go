@@ -42,7 +42,10 @@ func main() {
 		panic(err)
 	}
 	dbType := dbm.BackendType(*db)
-	db, err := dbm.NewDB("blockstore", dbType, d)
+	db, err := dbm.NewDB(dbType, map[string]string{
+		"dir":  d,
+		"name": "blockstore",
+	})
 	if err != nil {
 		panic(err)
 	}

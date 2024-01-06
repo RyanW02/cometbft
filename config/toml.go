@@ -108,10 +108,13 @@ moniker = "{{ .BaseConfig.Moniker }}"
 # * badgerdb (uses github.com/dgraph-io/badger)
 #   - EXPERIMENTAL
 #   - use badgerdb build tag (go build -tags badgerdb)
+# * mongodb
 db_backend = "{{ .BaseConfig.DBBackend }}"
 
-# Database directory
-db_dir = "{{ js .BaseConfig.DBPath }}"
+[db_options]
+dir = "data" # Directory for flat-file databases
+# connection_string = "" # MongoDB connection string, if db_backend is set to mongodb
+# database = "" # MongoDB database name, if db_backend is set to mongodb
 
 # Output level for logging, including package level options
 log_level = "{{ .BaseConfig.LogLevel }}"

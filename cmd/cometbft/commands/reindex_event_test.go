@@ -109,15 +109,18 @@ func TestLoadEventSink(t *testing.T) {
 
 func TestLoadBlockStore(t *testing.T) {
 	cfg := cmtcfg.TestConfig()
-	cfg.DBPath = t.TempDir()
+	cfg.DBOptions = map[string]string{
+		"dir": t.TempDir(),
+	}
+
 	_, _, err := loadStateAndBlockStore(cfg)
 	require.Error(t, err)
 
-	_, err = dbm.NewDB("blockstore", dbm.GoLevelDBBackend, cfg.DBDir())
+	_, err = dbm.NewFlatFileDB("blockstore", dbm.GoLevelDBBackend, cfg.DBDir())
 	require.NoError(t, err)
 
 	// Get StateStore
-	_, err = dbm.NewDB("state", dbm.GoLevelDBBackend, cfg.DBDir())
+	_, err = dbm.NewFlatFileDB("state", dbm.GoLevelDBBackend, cfg.DBDir())
 	require.NoError(t, err)
 
 	bs, ss, err := loadStateAndBlockStore(cfg)

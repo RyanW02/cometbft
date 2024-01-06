@@ -37,9 +37,9 @@ var ReIndexEventCmd = &cobra.Command{
 	Short:   "reindex events to the event store backends",
 	Long: `
 reindex-event is an offline tooling to re-index block and tx events to the eventsinks,
-you can run this command when the event store backend dropped/disconnected or you want to 
-replace the backend. The default start-height is 0, meaning the tooling will start 
-reindex from the base block height(inclusive); and the default end-height is 0, meaning 
+you can run this command when the event store backend dropped/disconnected or you want to
+replace the backend. The default start-height is 0, meaning the tooling will start
+reindex from the base block height(inclusive); and the default end-height is 0, meaning
 the tooling will reindex until the latest block height(inclusive). User can omit
 either or both arguments.
 
@@ -117,7 +117,7 @@ func loadEventSinks(cfg *cmtcfg.Config, chainID string) (indexer.BlockIndexer, t
 		}
 		return es.BlockIndexer(), es.TxIndexer(), nil
 	case "kv":
-		store, err := dbm.NewDB("tx_index", dbm.BackendType(cfg.DBBackend), cfg.DBDir())
+		store, err := dbm.NewDB(dbm.BackendType(cfg.DBBackend), config.BuildDBOptions("tx_index"))
 		if err != nil {
 			return nil, nil, err
 		}
