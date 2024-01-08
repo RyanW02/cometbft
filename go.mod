@@ -53,7 +53,7 @@ require (
 	github.com/oasisprotocol/curve25519-voi v0.0.0-20220708102147-0a8a51822cae
 	github.com/vektra/mockery/v2 v2.23.1
 	golang.org/x/sync v0.5.0
-	gonum.org/v1/gonum v0.12.0
+	gonum.org/v1/gonum v0.14.0
 	google.golang.org/protobuf v1.31.0
 )
 
