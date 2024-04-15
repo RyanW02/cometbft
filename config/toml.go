@@ -108,9 +108,18 @@ moniker = "{{ .BaseConfig.Moniker }}"
 # * badgerdb (uses github.com/dgraph-io/badger)
 #   - EXPERIMENTAL
 #   - use badgerdb build tag (go build -tags badgerdb)
-# * mongodb
+# * mongodb (uses go.mongodb.org/mongo-driver/mongo)
 db_backend = "{{ .BaseConfig.DBBackend }}"
 
+# Database options
+# Options are backend-specific
+#
+# * Flat file (goleveldb / cleveldb / boltdb / rocksdb / badgetdb) backend options
+# dir (string): directory for the database
+#
+# * MongoDB backend options
+# connection_string (string): connection string for MongoDB
+# database (string): name of the database to use within the MongoDB server
 [db_options]
 dir = "data" # Directory for flat-file databases
 # connection_string = "" # MongoDB connection string, if db_backend is set to mongodb

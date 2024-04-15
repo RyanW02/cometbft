@@ -185,7 +185,7 @@ type BaseConfig struct { //nolint: maligned
 	// A custom human readable name for this node
 	Moniker string `mapstructure:"moniker"`
 
-	// Database backend: goleveldb | cleveldb | boltdb | rocksdb
+	// Database backend: goleveldb | cleveldb | boltdb | rocksdb | mongodb
 	// * goleveldb (github.com/syndtr/goleveldb - most popular implementation)
 	//   - pure go
 	//   - stable
@@ -204,9 +204,17 @@ type BaseConfig struct { //nolint: maligned
 	// * badgerdb (uses github.com/dgraph-io/badger)
 	//   - EXPERIMENTAL
 	//   - use badgerdb build tag (go build -tags badgerdb)
+	// * mongodb (uses go.mongodb.org/mongo-driver/mongo)
 	DBBackend string `mapstructure:"db_backend"`
 
 	// Database options
+	// Options are backend-specific
+	//
+	// * Flat file (goleveldb / cleveldb / boltdb / rocksdb / badgetdb) backend options
+	// dir (string): directory for the database
+	// * MongoDB backend options
+	// connection_string (string): connection string for MongoDB
+	// database (string): name of the database to use within the MongoDB server
 	DBOptions map[string]string `mapstructure:"db_options"`
 
 	// Output level for logging
