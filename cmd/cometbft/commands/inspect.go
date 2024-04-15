@@ -40,8 +40,8 @@ func init() {
 	InspectCmd.Flags().
 		String("db-backend",
 			config.DBBackend, "database backend: goleveldb | cleveldb | boltdb | rocksdb | badgerdb")
-	//InspectCmd.Flags().
-	//	String("db-dir", config.DBPath, "database directory")
+	InspectCmd.Flags().
+		String("db-dir", "data", "database directory")
 }
 
 func runInspect(cmd *cobra.Command, _ []string) error {
