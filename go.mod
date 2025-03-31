@@ -1,7 +1,6 @@
 module github.com/cometbft/cometbft
 
 go 1.21
-
 require (
 	github.com/BurntSushi/toml v1.2.1
 	github.com/adlio/schema v1.3.3
@@ -54,7 +53,7 @@ require (
 	github.com/vektra/mockery/v2 v2.23.1
 	golang.org/x/sync v0.5.0
 	gonum.org/v1/gonum v0.12.0
-	google.golang.org/protobuf v1.31.0
+	google.golang.org/protobuf v1.36.6
 )
 
 require (
